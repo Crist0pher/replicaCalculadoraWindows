@@ -25,14 +25,19 @@ class CalcController{
         this._valor += value
         this.setDisplay()
     }
+    lastOperator(){
+       
+    if(this._operation.length >=3){
+        let valor1 = parseFloat(this._operation[0])
+        let operator = this._operation[1]
+        let valor2 = parseFloat(this._operation[2])
 
-
-    addOperation(value){
-        if(this.isOperator(value)== true){
-            console.log('infome um número')
-        }else{
-            
-        }
+        console.log(valor1 + operator + valor2)
+    }
+    
+    
+    
+    
     }
 
 
