@@ -4,63 +4,74 @@ class CalcController{
 
         this.displayCalc = document.getElementById("display")
 
+        this._valor =[]
         this._operation = []
         this.value = 0
-        this.setDisplay(0)
+        
         this.initButtonsEvents()
         this.display =[]
         this.excBtn()
+
     }
 
-    setDisplay(value){
-        
-        this.displayCalc.innerHTML = value
-    
+    isOperator(value){
+       return(['+','X','%','x²','¹/x','←','÷','X','-','±'].indexOf(value)>-1)
     }
+
+    setDisplay(){
+            this.displayCalc.innerHTML = this._valor
+        }
+    addNumber(value){
+        this._valor += value
+        this.setDisplay()
+    }
+
+
     addOperation(value){
-
-        this._operation.push(value)
-        console.log(this._operation)
+        if(this.isOperator(value)== true){
+            console.log('infome um número')
+        }else{
+            
+        }
     }
 
+
+    clearEntry(){
+        
+        var reduz = (this._valor.split(''))
+        reduz.pop()
+        this._valor = reduz.join('')
+        this.setDisplay()
+        
+        
+    }
+    clearAll(){
+        this._operation = [0]
+        this.setDisplay(this._operation) 
+    }
+    
     excBtn(value){
 
         switch(value){
-            case 'ce':
-
+            case 'CE':
+            this.clearEntry()
             break;
-            case 'c':
-
+            case 'C':
+            this.clearAll()
             break;
             case '%':
-
-            break;
             case 'x²':
-
-            break;
             case '¹/x':
-
-            break;
             case '←':
-
-            break;
             case '÷':
-
-            break;
             case 'X':
-
-            break;
-            case '-':
-
-            break;
             case '+':
-
-            break;
+            case '-':
             case '±':
-
+                    this.addOperation(value)
             break;
             case ',':
-
+                
             break;
             case '=':
 
@@ -75,14 +86,14 @@ class CalcController{
             case '8':
             case '9':
             case '0':
-                this.addOperation(value)
+                this.addNumber(value)
             break;
 
             default:
             break;
 
         }
-        this.setDisplay(this._operation)
+        
 
 
     }
@@ -104,7 +115,7 @@ class CalcController{
       
         this.addEventListenerAll(btn,'click drag', e=>{
            
-           console.log(btn.innerHTML)
+
            this.excBtn(btn.innerHTML)
            })
       
@@ -112,16 +123,8 @@ class CalcController{
 
     }
 
-    getDisplay(display){
-
-        var value = document.getElementById("display").innerHTML
-        var display 
-        display += value
-
-        console.log(display)
-        this.setDisplay(display)
-
-    }
+   
+    
 
 
 
