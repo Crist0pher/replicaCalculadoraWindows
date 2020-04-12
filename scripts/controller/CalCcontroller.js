@@ -18,26 +18,32 @@ class CalcController{
        return(['+','X','%','x²','¹/x','←','÷','X','-','±'].indexOf(value)>-1)
     }
 
-    setDisplay(){
-            this.displayCalc.innerHTML = this._valor
+    setDisplay(value){
+            this.displayCalc.innerHTML = value
         }
     addNumber(value){
-        this._valor += value
-        this.setDisplay()
-    }
-    lastOperator(){
-       
-    if(this._operation.length >=3){
-        let valor1 = parseFloat(this._operation[0])
-        let operator = this._operation[1]
-        let valor2 = parseFloat(this._operation[2])
 
-        console.log(valor1 + operator + valor2)
+        this._valor += value
+        this.setDisplay(this._valor)
+
+    
     }
-    
-    
-    
-    
+
+    addOperator(value){
+
+        if(this.isOperator(value) == true){
+            this._operation.push(this._valor)
+            this._valor = []
+            this._operation.push(value)
+            if(this._operation.length>3){
+                let operador = this._operation.pop()
+                this._operation.pop
+                let resultado = eval(this._operation.join(''))
+                this._operation = [resultado,operador]
+                this.setDisplay(this._operation.join(''))
+        }
+
+    }
     }
 
 
@@ -73,7 +79,7 @@ class CalcController{
             case '+':
             case '-':
             case '±':
-                    this.addOperation(value)
+                this.addOperator(value)
             break;
             case ',':
                 
