@@ -19,32 +19,39 @@ class CalcController{
     }
 
     setDisplay(value){
-            this.displayCalc.innerHTML = value
+            this.displayCalc.innerHTML =  value
         }
     addNumber(value){
 
         this._valor += value
-        this.setDisplay(this._valor)
+        this.setDisplay(this._operation.join('') + this._valor)
 
     
     }
 
+    lastOperator(){
+        return(this.isOperator(this._operation[this._operation.length-1]))
+    }
     addOperator(value){
+            
+        
+            if(!this._valor==''){this._operation.push(this._valor)}
+            if(this.lastOperator()){this._operation[this._operation.length-1] = value}else{this._operation.push(value)}
 
-        if(this.isOperator(value) == true){
-            this._operation.push(this._valor)
-            this._valor = []
-            this._operation.push(value)
+            this._valor = ''    
+            this.setDisplay(this._operation.join(''))
+           
             if(this._operation.length>3){
                 let operador = this._operation.pop()
                 this._operation.pop
                 let resultado = eval(this._operation.join(''))
                 this._operation = [resultado,operador]
                 this.setDisplay(this._operation.join(''))
-        }
-
-    }
-    }
+               }
+            }
+               
+    
+    
 
 
     clearEntry(){
@@ -74,8 +81,8 @@ class CalcController{
             case 'x²':
             case '¹/x':
             case '←':
-            case '÷':
-            case 'X':
+            case '/':
+            case '*':
             case '+':
             case '-':
             case '±':
