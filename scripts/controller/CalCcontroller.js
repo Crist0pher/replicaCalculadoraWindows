@@ -25,8 +25,17 @@ class CalcController{
 
         this._valor += value
         this.setDisplay(this._operation.join('') + this._valor)
-
+   
     
+    }
+
+    addVirgula(value){
+        if(this._valor.length == 0){this._valor = '0'}
+        if(this._valor.indexOf(',')>0){
+            console.log('tem virugla')
+        }else{
+            this.addNumber(',')
+        }
     }
 
     lastOperator(){
@@ -35,10 +44,17 @@ class CalcController{
     addOperator(value){
             
         
-            if(!this._valor==''){this._operation.push(this._valor)}
-            if(this.lastOperator()){this._operation[this._operation.length-1] = value}else{this._operation.push(value)}
+            if(this._valor.length > 0){
+                this._operation.push(this._valor)
+            }else{
+                this._operation.push(0)
+            }
+            
+            if(this.lastOperator()){
+                this._operation[this._operation.length-1] = value}else{this._operation.push(value)
+                }
 
-            this._valor = ''    
+            this._valor = []
             this.setDisplay(this._operation.join(''))
            
             if(this._operation.length>3){
@@ -51,20 +67,49 @@ class CalcController{
             }
                
     
-    
+    igual(){
+            if(this._valor.length>0){
+            this._operation.push(this._valor)
+            this._valor = []
+            }else if(this.lastOperator()){
+                var operador = this.isOperator[1]
+                var soma = eval(this._operation[0]+this._operation[1]+this._operation[0])
+                soma = soma.toString()
+                var operador = this._operation[1]
+                var valor = this._operation[0]
+                this._operation = []
+                this._operation.push(soma,operador,valor)
+                this.setDisplay(this._operation.join(''))
+
+            }
+             if(this._operation.length==3){
+                var soma = eval(this._operation.join(''))
+                soma = soma.toString()
+                this._operation[0] = soma
+                var operador = this._operation[1]
+                this._operation[1] = operador
+                this.setDisplay(this._operation.join(''))
+            }
+
+
+    }
 
 
     clearEntry(){
-        
+        var ajusta = this._operation.join('')
+        if(this._valor.length == 0){
+                this.setDisplay(ajusta)
+        }else{
         var reduz = (this._valor.split(''))
         reduz.pop()
         this._valor = reduz.join('')
-        this.setDisplay()
         
-        
+        this.setDisplay(ajusta + this._valor)
+    }
     }
     clearAll(){
-        this._operation = [0]
+        this._valor = []
+        this._operation = []
         this.setDisplay(this._operation) 
     }
     
@@ -89,10 +134,10 @@ class CalcController{
                 this.addOperator(value)
             break;
             case ',':
-                
+                this.addVirgula(value)
             break;
             case '=':
-
+            this.igual()
             break;
             case '1':
             case '2':
