@@ -15,10 +15,12 @@ class CalcController{
     }
 
     isOperator(value){
-       return(['+','X','%','x²','¹/x','←','÷','X','-','±'].indexOf(value)>-1)
+       return(['+','X','x²','¹/x','←','÷','X','-','±'].indexOf(value)>-1)
     }
 
     setDisplay(value){
+
+
             this.displayCalc.innerHTML =  value
         }
     addNumber(value){
@@ -29,17 +31,42 @@ class CalcController{
     
     }
 
+
     addVirgula(value){
         if(this._valor.length == 0){this._valor = '0'}
-        if(this._valor.indexOf(',')>0){
+        if(this._valor.indexOf('.')>0){
             console.log('tem virugla')
         }else{
-            this.addNumber(',')
+            this.addNumber('.')
         }
     }
 
     lastOperator(){
         return(this.isOperator(this._operation[this._operation.length-1]))
+    }
+    lastCaracter(){
+        return this._operation[this._operation.length-1]
+    }
+    porcent(){
+        
+     if(this._valor.length>0 ){
+        if(this._operation.length = 2) {       
+         this._operation.push(this._valor)
+         this._valor = []
+
+         let operador = this._operation[1]
+         let fistNumber = this._operation[0]
+         
+        let porcento = (this._operation[0]*this._operation[2])/100
+        
+        
+        this._operation = [fistNumber,operador,porcento]
+        this.setDisplay(porcento)
+
+        }
+    }
+
+
     }
     addOperator(value){
             
@@ -63,6 +90,8 @@ class CalcController{
                 let resultado = eval(this._operation.join(''))
                 this._operation = [resultado,operador]
                 this.setDisplay(this._operation.join(''))
+                this._operation = [resultado,operador]
+
                }
             }
                
@@ -72,15 +101,15 @@ class CalcController{
             this._operation.push(this._valor)
             this._valor = []
             }else if(this.lastOperator()){
-                var operador = this.isOperator[1]
+                
                 var soma = eval(this._operation[0]+this._operation[1]+this._operation[0])
                 soma = soma.toString()
                 var operador = this._operation[1]
-                var valor = this._operation[0]
                 this._operation = []
-                this._operation.push(soma,operador,valor)
+                
+                this._operation.push(soma,operador)
                 this.setDisplay(this._operation.join(''))
-
+                this._operation = [soma,operador]
             }
              if(this._operation.length==3){
                 var soma = eval(this._operation.join(''))
@@ -122,7 +151,7 @@ class CalcController{
             case 'C':
             this.clearAll()
             break;
-            case '%':
+           
             case 'x²':
             case '¹/x':
             case '←':
@@ -132,6 +161,9 @@ class CalcController{
             case '-':
             case '±':
                 this.addOperator(value)
+            break;
+            case '%':
+                this.porcent()
             break;
             case ',':
                 this.addVirgula(value)
