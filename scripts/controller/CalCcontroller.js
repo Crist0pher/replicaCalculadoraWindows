@@ -26,7 +26,7 @@ class CalcController{
     addNumber(value){
 
         this._valor += value
-        this.setDisplay(this._operation.join('') + this._valor)
+        this.setDisplay(this._valor)
    
     
     }
@@ -89,12 +89,42 @@ class CalcController{
                 this._operation.pop
                 let resultado = eval(this._operation.join(''))
                 this._operation = [resultado,operador]
-                this.setDisplay(this._operation.join(''))
+                this.setDisplay(resultado)
                 this._operation = [resultado,operador]
 
                }
             }
-               
+
+    raiz(){
+        if(this._valor.length>0){
+            this._operation.push(Math.sqrt((this._valor),2).toFixed(2))
+            this.setDisplay(this._operation)
+            this._valor= []
+
+        }else{
+            console.log('não existe valor para calcular')
+        }
+    
+
+
+    }
+    quadrado(){
+        if(this._valor.length>0){
+           
+            this._operation.push(this.seila(this._valor))
+
+            this.setDisplay(this._operation)
+            this._valor =[]
+        }else{
+            console.log('não existe valor para calcular')
+        }
+    
+    
+
+    }
+    seila(valor){
+        return Math.pow(valor,2)
+    }           
     
     igual(){
             if(this._valor.length>0){
@@ -117,7 +147,10 @@ class CalcController{
                 this._operation[0] = soma
                 var operador = this._operation[1]
                 this._operation[1] = operador
-                this.setDisplay(this._operation.join(''))
+                this.setDisplay(soma)
+                this._valor = []
+
+                
             }
 
 
@@ -141,26 +174,63 @@ class CalcController{
         this._operation = []
         this.setDisplay(this._operation) 
     }
+    ce(){
+        this._valor =[]
+        this.setDisplay(0)
+    }
+    fracao(){
+        if(this._valor.length > 0)
+        
+        var auxiliar = eval('1 /'+ this._valor).toFixed(4)
+        this.setDisplay(auxiliar)
+        this._valor = []
+
+
+    }
+    maisoumenos(){
+        if(this._valor.length > 0){
+            this._operation.push(this._valor* -1)
+            this.setDisplay(this._operation)
+            this._valor =  []
+        }else if(this._operation.length==1){
+            this._operation = this._operation[0] *-1
+            this.setDisplay(this._operation)
+        }
+    }
     
     excBtn(value){
 
         switch(value){
             case 'CE':
-            this.clearEntry()
+                this.ce()
             break;
             case 'C':
             this.clearAll()
             break;
            
             case 'x²':
-            case '¹/x':
+                this.quadrado()
+
+            break;    
             case '←':
+                this.clearEntry()
+            break;
+            case '¹/x':
+
+                this.fracao()
+            break;
+            case '±':
+            this.maisoumenos()
+            break;
+            
             case '/':
             case '*':
             case '+':
             case '-':
-            case '±':
                 this.addOperator(value)
+            break;
+            case '√':
+                this.raiz()
             break;
             case '%':
                 this.porcent()
